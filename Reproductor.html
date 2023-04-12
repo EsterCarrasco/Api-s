@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<html>
+<head>
+	<meta charset="uft-8">
+	<link rel="stylesheet" href="style.css" type="text/css"> </link>
+	
+</head>
+<body>
+	
+	<input type="file" id="inputVideo" accept="video/*">
+	<br><br>
+	<video id="videoPlayer" width="640" height="360" controls></video>
+	<br><br>
+	<div>
+		<button onclick="playVideo()">Play</button>
+		<button onclick="pauseVideo()">Pause</button>
+		<button onclick="increaseVolume()">+</button>
+		<button onclick="decreaseVolume()">-</button>
+	</div>
+	<div id="loadingMessage">Cargando vídeo...</div>
+	<script>
+		function playVideo() {
+			var video = document.getElementById("videoPlayer");
+			video.play();
+		}
+
+		function pauseVideo() {
+			var video = document.getElementById("videoPlayer");
+			video.pause();
+		}
+
+		function increaseVolume() {
+			var video = document.getElementById("videoPlayer");
+			if (video.volume < 1.0) {
+				video.volume += 0.1;
+			}
+		}
+
+		function decreaseVolume() {
+			var video = document.getElementById("videoPlayer");
+			if (video.volume > 0.0) {
+				video.volume -= 0.1;
+			}
+		}
+
+		function loadVideo() {
+			var video = document.getElementById("videoPlayer");
+			var fileInput = document.getElementById("inputVideo");
+			var file = fileInput.files[0];
+
+			if (file.type.startsWith("video/")) {
+				var fileURL = URL.createObjectURL(file);
+				video.src = fileURL;
+				video.onloadedmetadata = function() {
+					var loadingMessage = document.getElementById("loadingMessage");
+					loadingMessage.style.display = "none";
+				};
+				var loadingMessage = document.getElementById("loadingMessage");
+				loadingMessage.style.display = "block";
+			} else {
+				alert("El archivo seleccionado no es un vídeo");
+			}
+		}
+
+		var fileInput = document.getElementById("inputVideo");
+		fileInput.addEventListener("change", loadVideo);
+	</script>
+</body>
+</html>
